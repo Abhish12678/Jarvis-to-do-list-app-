@@ -29,7 +29,7 @@ It helps users manage daily tasks in a simple and interactive way.
 📊 Progress tracking
 🌙 Dark mode
 
-🙌 Author
+🙌 Author:-
 Abhishek Ashwani Prasad
 
 ⭐ Support
