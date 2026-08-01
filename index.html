@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS AI</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: radial-gradient(circle, #001f3f, black);
+    color: #00f7ff;
+    text-align: center;
+}
+
+/* Title */
+h1 {
+    margin-top: 30px;
+}
+
+/* Input Section */
+.container {
+    margin-top: 30px;
+}
+
+input, select {
+    padding: 15px;
+    width: 200px;
+    border: 2px solid #00f7ff;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    padding: 15px;
+    background: #00f7ff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Task List */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+li {
+    border: 1px solid #00f7ff;
+    margin: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Progress */
+#progress {
+    margin-top: 30px;
+    font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>⚡ JARVIS AI ⚡</h1>
+
+<div class="container">
+    <input type="text" id="taskInput" placeholder="Enter Task">
+    <input type="time" id="timeInput">
+    <button onclick="addTask()">ADD</button>
+</div>
+
+<ul id="taskList"></ul>
+
+<div id="progress">Progress: 0%</div>
+
+<script>
+
+// Load saved tasks
+window.onload = function() {
+    loadTasks();
+    updateProgress();
+};
+
+function addTask() {
+    let task = document.getElementById("taskInput").value;
+    let time = document.getElementById("timeInput").value;
+
+    if (task === "") return;
+
+    let li = document.createElement("li");
+
+    li.innerHTML = `
+        <span onclick="toggleTask(this)">
+            ${task} ${time ? " - " + time : ""}
+        </span>
+        <button onclick="deleteTask(this)">X</button>
+    `;
+
+    document.getElementById("taskList").appendChild(li);
+
+    saveTasks();
+    updateProgress();
+
+    document.getElementById("taskInput").value = "";
+    document.getElementById("timeInput").value = "";
+}
+
+// Toggle complete
+function toggleTask(el) {
+    el.parentElement.classList.toggle("completed");
+    saveTasks();
+    updateProgress();
+}
+
+// Delete task
+function deleteTask(btn) {
+    btn.parentElement.remove();
+    saveTasks();
+    updateProgress();
+}
+
+// Save to localStorage
+function saveTasks() {
+    localStorage.setItem("tasks", document.getElementById("taskList").innerHTML);
+}
+
+// Load from localStorage
+function loadTasks() {
+    let data = localStorage.getItem("tasks");
+    if (data) {
+        document.getElementById("taskList").innerHTML = data;
+    }
+}
+
+// Progress calculation
+function updateProgress() {
+    let tasks = document.querySelectorAll("li");
+    let completed = document.querySelectorAll(".completed");
+
+    let percent = tasks.length === 0 ? 0 : (completed.length / tasks.length) * 100;
+
+    document.getElementById("progress").innerText = "Progress: " + Math.round(percent) + "%";
+}
+
+</script>
+
+</body>
+</html>
+
+
